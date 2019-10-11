@@ -52,6 +52,19 @@ namespace TableRegion.ViewModels
             };
         }
 
+        public Region updateRegion( Region region )
+        {
+            char[] delimiter = { '|' };
+            region.RegionID = this.RegionID;
+            region.RegionDescription =
+                    this.RegionName + delimiter[0] +
+                    this.RegionLongitude + delimiter[0] +
+                    this.RegionLatitude + delimiter[0] +
+                    this.Country;
+            return region;
+
+        }
+
         public Territory insTeritory(DB_Context db)
         {
                 if (this.Country.Contains("INA"))

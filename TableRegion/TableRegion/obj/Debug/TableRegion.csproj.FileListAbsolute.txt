@@ -84,3 +84,6 @@ C:\Users\Padepokan79\source\repos\TableRegion\TableRegion\obj\Debug\TableRegion.
 C:\Users\Padepokan79\source\repos\TableRegion\TableRegion\obj\Debug\TableRegion.csproj.CopyComplete
 C:\Users\Padepokan79\source\repos\TableRegion\TableRegion\obj\Debug\TableRegion.dll
 C:\Users\Padepokan79\source\repos\TableRegion\TableRegion\obj\Debug\TableRegion.pdb
+C:\Users\Padepokan79\source\repos\TableRegion\TableRegion\bin\AutoMapper.dll
+C:\Users\Padepokan79\source\repos\TableRegion\TableRegion\bin\AutoMapper.pdb
+C:\Users\Padepokan79\source\repos\TableRegion\TableRegion\bin\AutoMapper.xml

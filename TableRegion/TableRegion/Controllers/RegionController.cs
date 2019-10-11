@@ -45,36 +45,25 @@ namespace TableRegion.Controllers
 
         [Route("update")]
         [HttpPut]
-        public IHttpActionResult Update ([FromBody] RegionViewModel databody)
+        public IHttpActionResult Update ([FromBody] RegDetailViewModel databody)
         {
             using (var db = new DB_Context())
             {
                 try
                 {
                     Dictionary<string, object> result = new Dictionary<string, object>();
-                    List<RegionViewModel> regUpdate = new List<RegionViewModel>();
-
+                    List<RegDetailViewModel> regUpdate = new List<RegDetailViewModel>();
                     Region region = db.Regions.Find(databody.RegionID);
-
-                    region.RegionID = databody.RegionID;
-                    region.RegionDescription = databody.RegionName + "|" + databody.RegionLongitude + "|" + databody.RegionLatitude + "|" + databody.Country;
-
-                    RegionViewModel reg = new RegionViewModel()
+                    databody.updateRegion(region);
+                    var reg = db.Regions.Where(data => data.RegionID == databody.RegionID).AsEnumerable().ToList();
+                    foreach (var item in reg)
                     {
-                        RegionID = databody.RegionID,
-                        RegionName = databody.RegionName,
-                        RegionLongitude = databody.RegionLongitude,
-                        RegionLatitude = databody.RegionLatitude,
-                        Country = databody.Country
-                    };
-
-                    regUpdate.Add(reg);
-
+                        RegDetailViewModel regView = new RegDetailViewModel(item);
+                        regUpdate.Add(regView);
+                    }
                     db.SaveChanges();
-                    result.Add("Message", "Update Data Success");
                     result.Add("Data", regUpdate);
                     return Ok(result);
-
                 }
                 catch (Exception)
                 {
@@ -112,21 +101,17 @@ namespace TableRegion.Controllers
         [HttpGet]
         public IHttpActionResult ReadAll(int? regionID = null)
         {
-            //membuat koneksi database
             using (var db = new DB_Context())
             {
                 try
                 {
-                    //mengambil data dan merubah menjadi list
                     var temp = db.Regions.AsQueryable();
                     List<RegionViewModel> listRegion = new List<RegionViewModel>();
                     Dictionary<string, object> result = new Dictionary<string, object>();
-
                     if (regionID != null)
                     {
                         temp = temp.Where(data => data.RegionID == regionID);
                     }
-
                     var listRegionEntity = temp.AsEnumerable().ToList();
                     foreach (var item in listRegionEntity)
                     {
@@ -134,7 +119,6 @@ namespace TableRegion.Controllers
 
                         listRegion.Add(regionDesc);
                     };
-                    result.Add("Message", "Read Data Success");
                     result.Add("Data", listRegion);
                     return Ok(result);
                 }

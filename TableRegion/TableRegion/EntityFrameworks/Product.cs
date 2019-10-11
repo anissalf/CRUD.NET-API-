@@ -37,6 +37,8 @@ namespace TableRegion.EntityFrameworks
         public short? ReorderLevel { get; set; }
 
         public bool Discontinued { get; set; }
+        public string ProductType { get; set; }
+        public string ProductDetail { get; set; }
 
         public virtual Category Category { get; set; }
 
