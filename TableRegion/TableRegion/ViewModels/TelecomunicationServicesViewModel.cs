@@ -6,46 +6,41 @@ using TableRegion.EntityFrameworks;
 
 namespace TableRegion.ViewModels
 {
-    public class TransportationServicesViewModel : ServicesViewModel
+    public class TelecomunicationServicesViewModel : ServicesViewModel
     {
         public int ProductID { get; set; }
         public string ProductDescription { get; set; }
-        public string VehicleType { get; set; }
-        public string RoutePath { get; set; }
-        public string RouteMilleage { get; set; }
+        public string PacketType { get; set; }
+        public string PacketLimit { get; set; }
         public string CostCalculationMethod { get; set; }
         public string CostRate { get; set; }
 
-        public TransportationServicesViewModel()
+        public TelecomunicationServicesViewModel()
         {
 
         }
-
-        public TransportationServicesViewModel (Product product)
+        public TelecomunicationServicesViewModel (Product product)
         {
             char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
-
             {
                 String[] productDetail = product.ProductDetail.Split(delimiter);
 
                 this.ProductDescription = productDetail[0];
-                this.VehicleType = productDetail[1];
-                this.RoutePath = productDetail[2];
-                this.RouteMilleage = productDetail[3];
+                this.PacketType = productDetail[1];
+                this.PacketLimit = productDetail[2];
                 this.CostCalculationMethod = productDetail[4];
                 this.CostRate = productDetail[5];
-                
+
             }
         }
         public string convertServiceToString()
         {
             return this.ProductDescription + ";" +
-                this.VehicleType + ";" +
-                this.RoutePath + ";" +
-                this.RouteMilleage + ";" +
+                this.PacketType + ";" +
+                this.PacketLimit + ";" +
                 this.CostCalculationMethod + ";" +
                 this.CostRate;
         }
@@ -56,41 +51,42 @@ namespace TableRegion.ViewModels
             Dictionary<string, object> dictProduct = new Dictionary<string, object>();
             dictProduct.Add("ProductID", this.ProductID);
             dictProduct.Add("ProductDescription", this.ProductDescription);
-            dictProduct.Add("VehicleType", this.VehicleType);
-            dictProduct.Add("RoutePath", this.RoutePath);
-            dictProduct.Add("RouteMilleage", this.RouteMilleage);
+            dictProduct.Add("PacketType", this.PacketType);
+            dictProduct.Add("PacketLimit", this.PacketLimit);
             dictProduct.Add("CostCalculationMethod", this.CostCalculationMethod);
             dictProduct.Add("CostRate", this.CostRate);
-            
+
             return dictProduct;
         }
 
-        
         public decimal? CalculateProductUnitPrices(string condition = "", int? userDemand = 0, decimal? duration = 0)
         {
-            int? hasil = null;
-            if (CostCalculationMethod.Equals("FixPerRoute"))
+            decimal? valueResult = null;
+            decimal decCostRate = decimal.Parse(CostRate);
+
+            if (CostCalculationMethod.Equals("PerSecond"))
             {
-                hasil = 1 * Int32.Parse(CostRate);
+                valueResult = decCostRate * duration;
             }
-            if (CostCalculationMethod.Equals("PerMiles"))
+            else if (CostCalculationMethod.Equals("PerPacket"))
             {
-                hasil = Int32.Parse(RouteMilleage) * (Int32.Parse(CostRate) / 2);
-            }
-            if (CostCalculationMethod.Equals("PerMilesWithCondition"))
-            {
-                var nilai = 0;
-                if (condition == "GoodWeather")
+                if (PacketType.Equals("Data"))
                 {
-                    nilai = 5;
+                    valueResult = decimal.Parse(PacketLimit) * decCostRate;
                 }
-                else if (condition == "BadWeather")
+                else
                 {
-                    nilai = 15;
+                    valueResult = (decCostRate * duration) * decCostRate;
                 }
-                hasil = (Int32.Parse(RouteMilleage) * Int32.Parse(CostRate) / 2) * (((nilai + (userDemand / 50)) + 95)) / 100;
             }
-            return hasil * (Convert.ToDecimal(110) / Convert.ToDecimal(100));
+            else
+            {
+                valueResult = 0;
+            }
+
+            return valueResult * (Convert.ToDecimal(110) / Convert.ToDecimal(100));
         }
+        
+
     }
 }

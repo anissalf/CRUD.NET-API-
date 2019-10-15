@@ -55,14 +55,26 @@ namespace TableRegion.Controllers
 
         [Route("create")]
         [HttpPost]
-        public IHttpActionResult CreateItems( [FromBody] ProductDetailViewModel databody )
+        public IHttpActionResult CreateItems( [FromBody] ProductDetailViewModel databody, string condition = "", int? userDemand = 0, decimal? duration = 0)
         {
             using(var db = new DB_Context())
             {
                 try
                 {
-                    Product food = databody.convertToProduct();
-                    db.Products.Add(food);
+                    Product product = databody.convertToProduct();
+                    if (condition != "" && userDemand != 0)
+                    {
+                        product = databody.convertToProduct(condition, userDemand, 0);
+                    }
+                    else if (duration != 0)
+                    {
+                        product = databody.convertToProduct("", 0, duration);
+                    }
+                    else
+                    {
+                        product = databody.convertToProduct("", 0, 0);
+                    }
+                    db.Products.Add(product);
                     db.SaveChanges();
 
                     return Ok("sip");

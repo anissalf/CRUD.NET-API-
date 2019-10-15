@@ -203,11 +203,14 @@
     <Compile Include="ViewModels\CostCalculationViewModel.cs" />
     <Compile Include="ViewModels\FoodNBeverageViewModel.cs" />
     <Compile Include="ViewModels\GarmentViewModel.cs" />
+    <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\MaterialViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="ViewModels\RegDetailViewModel.cs" />
     <Compile Include="ViewModels\RegionViewModel.cs" />
+    <Compile Include="ViewModels\ServicesViewModel.cs" />
+    <Compile Include="ViewModels\TelecomunicationServicesViewModel.cs" />
     <Compile Include="ViewModels\TransportationServicesViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

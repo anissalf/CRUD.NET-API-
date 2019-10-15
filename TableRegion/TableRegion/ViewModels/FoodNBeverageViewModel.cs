@@ -6,7 +6,7 @@ using TableRegion.EntityFrameworks;
 
 namespace TableRegion.ViewModels
 {
-    public class FoodNBeverageViewModel
+    public class FoodNBeverageViewModel : ItemsViewModel
     {
         public int ProductID { get; set; }
         public string ProductDescription { get; set; }
@@ -17,6 +17,8 @@ namespace TableRegion.ViewModels
         public string Ingredients { get; set; }
         public string DailyValue { get; set; }
         public string Certification { get; set; }
+        public string UnitOfMeasurement { get; set; }
+        public string CostRate { get; set; }
 
         public FoodNBeverageViewModel()
         {
@@ -25,7 +27,7 @@ namespace TableRegion.ViewModels
         
         public FoodNBeverageViewModel(Product product)
         {
-            char[] delimiter = { '|' };
+            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
@@ -40,19 +42,24 @@ namespace TableRegion.ViewModels
                 this.Ingredients = productDetail[5];
                 this.DailyValue = productDetail[6];
                 this.Certification = productDetail[7];
+                this.UnitOfMeasurement = productDetail[8];
+                this.CostRate = productDetail[9];
+
             }
         }
 
         public string convertToString()
         {
-            return this.ProductDescription + "|" + 
-                this.ProductionCode + "|" + 
-                this.ProductionDate + "|" + 
-                this.ExpiredDate + "|" + 
-                this.NetWeight + "|" + 
-                this.Ingredients + "|" + 
-                this.DailyValue + "|" +
-                this.Certification;
+            return this.ProductDescription + ";" + 
+                this.ProductionCode + ";" + 
+                this.ProductionDate + ";" + 
+                this.ExpiredDate + ";" + 
+                this.NetWeight + ";" + 
+                this.Ingredients + ";" + 
+                this.DailyValue + ";" +
+                this.Certification + ";" +
+                this.UnitOfMeasurement + ";" +
+                this.CostRate;
         }
 
         public Dictionary<string, object> convertToDictionary()
@@ -68,9 +75,19 @@ namespace TableRegion.ViewModels
             dictProduct.Add("Ingredients", this.Ingredients);
             dictProduct.Add("DailyValue", this.DailyValue);
             dictProduct.Add("Certification", this.Certification);
+            dictProduct.Add("UnitOfMeasurement", this.UnitOfMeasurement);
+            dictProduct.Add("CostRate", this.CostRate);
 
             return dictProduct;
         }
 
+        public decimal CalculateProductUnitPrice()
+        {
+
+            var cost = Decimal.Parse(CostRate);
+            decimal hasil = cost * (Convert.ToDecimal(110) / Convert.ToDecimal(100));
+
+            return hasil;
+        }
     }
 }

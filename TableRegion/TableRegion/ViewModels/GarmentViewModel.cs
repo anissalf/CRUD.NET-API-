@@ -6,7 +6,7 @@ using TableRegion.EntityFrameworks;
 
 namespace TableRegion.ViewModels
 {
-    public class GarmentViewModel
+    public class GarmentViewModel : ItemsViewModel
     {
         public int ProductID { get; set; }
         public string ProductDescription { get; set; }
@@ -19,7 +19,8 @@ namespace TableRegion.ViewModels
         public string Color { get; set; }
         public string Size { get; set; }
         public string AgeGroup { get; set; }
-
+        public string UnitOfMeasurement { get; set; }
+        public string CostRate { get; set; }
         public GarmentViewModel()
         {
 
@@ -27,7 +28,7 @@ namespace TableRegion.ViewModels
 
         public GarmentViewModel( Product product)
         {
-            char[] delimiter = { '|' };
+            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
@@ -44,20 +45,24 @@ namespace TableRegion.ViewModels
                 this.Color = productDetail[7];
                 this.Size = productDetail[8];
                 this.AgeGroup = productDetail[9];
+                this.UnitOfMeasurement = productDetail[10];
+                this.CostRate = productDetail[11];
             }
         }
         public string convertToString()
         {
-            return this.ProductDescription + "|" +
-                this.ProductionCode + "|" +
-                this.ProductionDate + "|" +
-                this.GarmentsType + "|" +
-                this.Fabrics + "|" +
-                this.GenderRelated + "|" +
-                this.IsWaterProof + "|" +
-                this.Color + "|" +
-                this.Size + "|" +
-                this.AgeGroup;
+            return this.ProductDescription + ";" +
+                this.ProductionCode + ";" +
+                this.ProductionDate + ";" +
+                this.GarmentsType + ";" +
+                this.Fabrics + ";" +
+                this.GenderRelated + ";" +
+                this.IsWaterProof + ";" +
+                this.Color + ";" +
+                this.Size + ";" +
+                this.AgeGroup + ";" +
+                this.UnitOfMeasurement + ";" +
+                this.CostRate;
         }
 
         public Dictionary<string, object> convertToDictionary()
@@ -75,8 +80,19 @@ namespace TableRegion.ViewModels
             dictProduct.Add("Color", this.Color);
             dictProduct.Add("Size", this.Size);
             dictProduct.Add("AgeGroup", this.AgeGroup);
+            dictProduct.Add("UnitOfMeasurement", this.UnitOfMeasurement);
+            dictProduct.Add("CostRate", this.CostRate);
 
             return dictProduct;
+        }
+
+        public decimal CalculateProductUnitPrice()
+        {
+
+            var cost = Decimal.Parse(CostRate);
+            var hasil = cost * (110 / 100);
+
+            return hasil;
         }
     }
 

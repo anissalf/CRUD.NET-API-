@@ -36,6 +36,7 @@ namespace TableRegion.ViewModels
                 {
                     FoodNBeverageViewModel Foods = new FoodNBeverageViewModel(product);
                     ProductDetail = Foods.convertToDictionary();
+                    
                 }
                 if (ProductType.Contains("GarmentItems"))
                 {
@@ -50,7 +51,7 @@ namespace TableRegion.ViewModels
                 if (ProductType.Contains("TransportationServices"))
                 {
                     TransportationServicesViewModel Transport = new TransportationServicesViewModel(product);
-                    ProductDetail = Transport.convertToDictionary();
+                    ProductDetail = Transport.convertServiceToDictionary();
                 }
             }
             
@@ -59,9 +60,10 @@ namespace TableRegion.ViewModels
         
         
 
-        public Product convertToProduct()
+        public Product convertToProduct(string condition = "", int? userDemand = 0, decimal? duration = 0)
         {
             var description = "";
+            decimal? price = 0;
             var config = new MapperConfiguration(con => { });
             var mapper = new Mapper(config);
 
@@ -69,21 +71,31 @@ namespace TableRegion.ViewModels
             {
                 FoodNBeverageViewModel Foods = mapper.Map<FoodNBeverageViewModel>(this.ProductDetail);
                 description = Foods.convertToString();
+                price = Foods.CalculateProductUnitPrice();
             }
             else if (this.ProductType.Contains("MaterialItems"))
             {
                 MaterialViewModel material = mapper.Map<MaterialViewModel>(this.ProductDetail);
                 description = material.convertToString();
+                price = material.CalculateProductUnitPrice();
             }
             else if (this.ProductType.Contains("GarmentItems"))
             {
                 GarmentViewModel garment = mapper.Map<GarmentViewModel>(this.ProductDetail);
                 description = garment.convertToString();
+                price = garment.CalculateProductUnitPrice();
             }
             else if (this.ProductType.Contains("TransportationServices"))
             {
                 TransportationServicesViewModel transport = mapper.Map<TransportationServicesViewModel>(this.ProductDetail);
-                description = transport.convertToString();
+                description = transport.convertServiceToString();
+                price = transport.CalculateProductUnitPrices(condition, userDemand, 0);
+            }
+            else if (this.ProductType.Contains("TelecommunicationServices"))
+            {
+                TelecomunicationServicesViewModel telecommunications = mapper.Map<TelecomunicationServicesViewModel>(this.ProductDetail);
+                description = telecommunications.convertServiceToString();
+                price = telecommunications.CalculateProductUnitPrices("", 0, duration);
             }
 
             return new Product()
@@ -93,7 +105,7 @@ namespace TableRegion.ViewModels
                 SupplierID = this.SupplierID,
                 CategoryID = this.CategoryID,
                 QuantityPerUnit = this.QuantityPerUnit,
-                UnitPrice = this.UnitPrice,
+                UnitPrice = price,
                 UnitsInStock = this.UnitsInStock,
                 UnitsOnOrder = this.UnitsOnOrder,
                 ReorderLevel = this.ReorderLevel,
