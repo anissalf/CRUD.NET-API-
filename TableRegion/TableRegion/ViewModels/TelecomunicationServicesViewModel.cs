@@ -19,14 +19,17 @@ namespace TableRegion.ViewModels
         {
 
         }
+        public char delimiter()
+        {
+            return '\'';
+        }
         public TelecomunicationServicesViewModel (Product product)
         {
-            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
-                String[] productDetail = product.ProductDetail.Split(delimiter);
+                String[] productDetail = product.ProductDetail.Split(delimiter());
 
                 this.ProductDescription = productDetail[0];
                 this.PacketType = productDetail[1];
@@ -38,10 +41,10 @@ namespace TableRegion.ViewModels
         }
         public string convertServiceToString()
         {
-            return this.ProductDescription + ";" +
-                this.PacketType + ";" +
-                this.PacketLimit + ";" +
-                this.CostCalculationMethod + ";" +
+            return this.ProductDescription + delimiter() +
+                this.PacketType + delimiter() +
+                this.PacketLimit + delimiter() +
+                this.CostCalculationMethod + delimiter() +
                 this.CostRate;
         }
 
@@ -59,7 +62,7 @@ namespace TableRegion.ViewModels
             return dictProduct;
         }
 
-        public decimal? CalculateProductUnitPrices(string condition = "", int? userDemand = 0, decimal? duration = 0)
+        public decimal? CalculateProductUnitPrices(string condition = "", int? userDemand = null, decimal? duration = null)
         {
             decimal? valueResult = null;
             decimal decCostRate = decimal.Parse(CostRate);

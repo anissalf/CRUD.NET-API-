@@ -20,16 +20,18 @@ namespace TableRegion.ViewModels
         {
 
         }
-
+        public char delimiter()
+        {
+            return '\'';
+        }
         public TransportationServicesViewModel (Product product)
         {
-            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
 
             {
-                String[] productDetail = product.ProductDetail.Split(delimiter);
+                String[] productDetail = product.ProductDetail.Split(delimiter());
 
                 this.ProductDescription = productDetail[0];
                 this.VehicleType = productDetail[1];
@@ -42,11 +44,11 @@ namespace TableRegion.ViewModels
         }
         public string convertServiceToString()
         {
-            return this.ProductDescription + ";" +
-                this.VehicleType + ";" +
-                this.RoutePath + ";" +
-                this.RouteMilleage + ";" +
-                this.CostCalculationMethod + ";" +
+            return this.ProductDescription + delimiter() +
+                this.VehicleType + delimiter() +
+                this.RoutePath + delimiter() +
+                this.RouteMilleage + delimiter() +
+                this.CostCalculationMethod + delimiter() +
                 this.CostRate;
         }
 

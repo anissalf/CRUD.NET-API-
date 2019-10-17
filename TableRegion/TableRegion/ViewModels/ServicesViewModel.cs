@@ -7,8 +7,9 @@ namespace TableRegion.ViewModels
 {
     public interface ServicesViewModel
     {
+        char delimiter();
         string convertServiceToString();
         Dictionary<string, object> convertServiceToDictionary();
-        decimal? CalculateProductUnitPrices(string condition = "", int? userDemand = 0, decimal? duration = 0);
+        decimal? CalculateProductUnitPrices(string condition = null, int? userDemand = null, decimal? duration = null);
     }
 }

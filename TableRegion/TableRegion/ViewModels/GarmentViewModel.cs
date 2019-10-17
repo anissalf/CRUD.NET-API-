@@ -25,15 +25,17 @@ namespace TableRegion.ViewModels
         {
 
         }
-
+        public char delimiter()
+        {
+            return '\'';
+        }
         public GarmentViewModel( Product product)
         {
-            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
-                String[] productDetail = product.ProductDetail.Split(delimiter);
+                String[] productDetail = product.ProductDetail.Split(delimiter());
 
                 this.ProductDescription = productDetail[0];
                 this.ProductionCode = productDetail[1];
@@ -51,17 +53,17 @@ namespace TableRegion.ViewModels
         }
         public string convertToString()
         {
-            return this.ProductDescription + ";" +
-                this.ProductionCode + ";" +
-                this.ProductionDate + ";" +
-                this.GarmentsType + ";" +
-                this.Fabrics + ";" +
-                this.GenderRelated + ";" +
-                this.IsWaterProof + ";" +
-                this.Color + ";" +
-                this.Size + ";" +
-                this.AgeGroup + ";" +
-                this.UnitOfMeasurement + ";" +
+            return this.ProductDescription + delimiter() +
+                this.ProductionCode + delimiter() +
+                this.ProductionDate + delimiter() +
+                this.GarmentsType + delimiter() +
+                this.Fabrics + delimiter() +
+                this.GenderRelated + delimiter() +
+                this.IsWaterProof + delimiter() +
+                this.Color + delimiter() +
+                this.Size + delimiter() +
+                this.AgeGroup + delimiter() +
+                this.UnitOfMeasurement + delimiter() +
                 this.CostRate;
         }
 
@@ -90,7 +92,7 @@ namespace TableRegion.ViewModels
         {
 
             var cost = Decimal.Parse(CostRate);
-            var hasil = cost * (110 / 100);
+            decimal hasil = cost * (Convert.ToDecimal(110) / Convert.ToDecimal(100));
 
             return hasil;
         }

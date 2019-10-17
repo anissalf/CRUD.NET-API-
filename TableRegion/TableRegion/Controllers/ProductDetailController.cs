@@ -61,23 +61,13 @@ namespace TableRegion.Controllers
             {
                 try
                 {
+                    ProductDetailViewModel prodDetail = new ProductDetailViewModel();
                     Product product = databody.convertToProduct();
-                    if (condition != "" && userDemand != 0)
-                    {
-                        product = databody.convertToProduct(condition, userDemand, 0);
-                    }
-                    else if (duration != 0)
-                    {
-                        product = databody.convertToProduct("", 0, duration);
-                    }
-                    else
-                    {
-                        product = databody.convertToProduct("", 0, 0);
-                    }
+                    product = databody.convertToProduct(condition, userDemand, duration);
                     db.Products.Add(product);
                     db.SaveChanges();
 
-                    return Ok("sip");
+                    return Ok("Insert Data Success");
                 }
                 catch (Exception)
                 {

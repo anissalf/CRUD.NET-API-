@@ -24,15 +24,17 @@ namespace TableRegion.ViewModels
         {
             
         }
-        
+        public char delimiter()
+        {
+            return '\'';
+        }
         public FoodNBeverageViewModel(Product product)
         {
-            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
-                String[] productDetail = product.ProductDetail.Split(delimiter);
+                String[] productDetail = product.ProductDetail.Split(delimiter());
 
                 this.ProductDescription = productDetail[0];
                 this.ProductionCode = productDetail[1];
@@ -50,15 +52,15 @@ namespace TableRegion.ViewModels
 
         public string convertToString()
         {
-            return this.ProductDescription + ";" + 
-                this.ProductionCode + ";" + 
-                this.ProductionDate + ";" + 
-                this.ExpiredDate + ";" + 
-                this.NetWeight + ";" + 
-                this.Ingredients + ";" + 
-                this.DailyValue + ";" +
-                this.Certification + ";" +
-                this.UnitOfMeasurement + ";" +
+            return this.ProductDescription + delimiter() + 
+                this.ProductionCode + delimiter() + 
+                this.ProductionDate + delimiter() + 
+                this.ExpiredDate + delimiter() + 
+                this.NetWeight + delimiter() + 
+                this.Ingredients + delimiter() + 
+                this.DailyValue + delimiter() +
+                this.Certification + delimiter() +
+                this.UnitOfMeasurement + delimiter() +
                 this.CostRate;
         }
 

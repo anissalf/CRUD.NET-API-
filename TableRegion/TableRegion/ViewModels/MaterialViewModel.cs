@@ -22,15 +22,17 @@ namespace TableRegion.ViewModels
         {
 
         }
-
+        public char delimiter()
+        {
+            return '\'';
+        }
         public MaterialViewModel( Product product)
         {
-            char[] delimiter = { ';' };
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
-                String[] productDetail = product.ProductDetail.Split(delimiter);
+                String[] productDetail = product.ProductDetail.Split(delimiter());
 
                 this.ProductDescription = productDetail[0];
                 this.ProductionCode = productDetail[1];
@@ -46,13 +48,13 @@ namespace TableRegion.ViewModels
         
         public string convertToString()
         {
-            return this.ProductDescription + ";" +
-                this.ProductionCode + ";" +
-                this.ProductionDate + ";" +
-                this.ExpiredDate + ";" +
-                this.MaterialsType + ";" +
-                this.UnitOfMeasurement + ";" +
-                this.IsConsumable + ";" +
+            return this.ProductDescription + delimiter() +
+                this.ProductionCode + delimiter() +
+                this.ProductionDate + delimiter() +
+                this.ExpiredDate + delimiter() +
+                this.MaterialsType + delimiter() +
+                this.UnitOfMeasurement + delimiter() +
+                this.IsConsumable + delimiter() +
                 this.CostRate;
         }
 
@@ -76,7 +78,7 @@ namespace TableRegion.ViewModels
         {
             
             var cost = Decimal.Parse(CostRate);
-            var hasil = (cost * (110 / 100));
+            decimal hasil = cost * (Convert.ToDecimal(110) / Convert.ToDecimal(100));
 
             return hasil;
         }
