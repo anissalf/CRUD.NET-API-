@@ -15,23 +15,25 @@ namespace TableRegion.ViewModels
         public string RouteMilleage { get; set; }
         public string CostCalculationMethod { get; set; }
         public string CostRate { get; set; }
+        public string UnitProvit { get; set; }
 
         public TransportationServicesViewModel()
         {
 
         }
-        public char delimiter()
+        public char delimiter(char? deli)
         {
-            return '\'';
+            return deli != null ? Convert.ToChar(deli) : '|';
+
         }
-        public TransportationServicesViewModel (Product product)
+        public TransportationServicesViewModel (Product product, char? deli)
         {
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
 
             {
-                String[] productDetail = product.ProductDetail.Split(delimiter());
+                String[] productDetail = product.ProductDetail.Split(delimiter(deli));
 
                 this.ProductDescription = productDetail[0];
                 this.VehicleType = productDetail[1];
@@ -39,17 +41,19 @@ namespace TableRegion.ViewModels
                 this.RouteMilleage = productDetail[3];
                 this.CostCalculationMethod = productDetail[4];
                 this.CostRate = productDetail[5];
+                this.UnitProvit = productDetail[6];
                 
             }
         }
-        public string convertServiceToString()
+        public string convertServiceToString(char? deli)
         {
-            return this.ProductDescription + delimiter() +
-                this.VehicleType + delimiter() +
-                this.RoutePath + delimiter() +
-                this.RouteMilleage + delimiter() +
-                this.CostCalculationMethod + delimiter() +
-                this.CostRate;
+            return this.ProductDescription + delimiter(deli) +
+                this.VehicleType + delimiter(deli) +
+                this.RoutePath + delimiter(deli) +
+                this.RouteMilleage + delimiter(deli) +
+                this.CostCalculationMethod + delimiter(deli) +
+                this.CostRate + delimiter(deli) +
+                this.UnitProvit;
         }
 
         public Dictionary<string, object> convertServiceToDictionary()
@@ -63,6 +67,7 @@ namespace TableRegion.ViewModels
             dictProduct.Add("RouteMilleage", this.RouteMilleage);
             dictProduct.Add("CostCalculationMethod", this.CostCalculationMethod);
             dictProduct.Add("CostRate", this.CostRate);
+            dictProduct.Add("UnitProvit", this.UnitProvit);
             
             return dictProduct;
         }

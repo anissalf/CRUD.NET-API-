@@ -13,7 +13,7 @@ namespace TableRegion.Controllers
     {
         [Route("readAll")]
         [HttpGet]
-        public IHttpActionResult ReadAll(int? productID = null)
+        public IHttpActionResult ReadAll(int? productID = null, char? deli = null)
         {
             using (var db = new DB_Context())
             {
@@ -31,7 +31,7 @@ namespace TableRegion.Controllers
                         
                         foreach (var item in temp)
                         {
-                            ProductDetailViewModel productDet = new ProductDetailViewModel(item);
+                            ProductDetailViewModel productDet = new ProductDetailViewModel(item, deli);
 
                             listProduct.Add(productDet);
                         };
@@ -55,15 +55,14 @@ namespace TableRegion.Controllers
 
         [Route("create")]
         [HttpPost]
-        public IHttpActionResult CreateItems( [FromBody] ProductDetailViewModel databody, string condition = "", int? userDemand = 0, decimal? duration = 0)
+        public IHttpActionResult CreateItems( [FromBody] ProductDetailViewModel databody, string condition = "", int? userDemand = 0, decimal? duration = 0, char? deli=null)
         {
             using(var db = new DB_Context())
             {
                 try
                 {
                     ProductDetailViewModel prodDetail = new ProductDetailViewModel();
-                    Product product = databody.convertToProduct();
-                    product = databody.convertToProduct(condition, userDemand, duration);
+                    Product product = databody.convertToProduct(condition, userDemand, duration, deli);
                     db.Products.Add(product);
                     db.SaveChanges();
 

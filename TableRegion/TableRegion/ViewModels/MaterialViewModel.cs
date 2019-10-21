@@ -17,22 +17,24 @@ namespace TableRegion.ViewModels
         public string UnitOfMeasurement { get; set; }
         public string IsConsumable { get; set; }
         public string CostRate { get; set; }
+        public string UnitProvit { get; set; }
 
         public MaterialViewModel()
         {
 
         }
-        public char delimiter()
+        public char delimiter(char? deli)
         {
-            return '\'';
+            return deli != null ? Convert.ToChar(deli) : '|';
+
         }
-        public MaterialViewModel( Product product)
+        public MaterialViewModel( Product product, char? deli)
         {
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
-                String[] productDetail = product.ProductDetail.Split(delimiter());
+                String[] productDetail = product.ProductDetail.Split(delimiter(deli));
 
                 this.ProductDescription = productDetail[0];
                 this.ProductionCode = productDetail[1];
@@ -42,20 +44,22 @@ namespace TableRegion.ViewModels
                 this.UnitOfMeasurement = productDetail[5];
                 this.IsConsumable = productDetail[6];
                 this.CostRate = productDetail[7];
+                this.UnitProvit = productDetail[8];
                 
             }
         }
         
-        public string convertToString()
+        public string convertToString(char? deli)
         {
-            return this.ProductDescription + delimiter() +
-                this.ProductionCode + delimiter() +
-                this.ProductionDate + delimiter() +
-                this.ExpiredDate + delimiter() +
-                this.MaterialsType + delimiter() +
-                this.UnitOfMeasurement + delimiter() +
-                this.IsConsumable + delimiter() +
-                this.CostRate;
+            return this.ProductDescription + delimiter(deli) +
+                this.ProductionCode + delimiter(deli) +
+                this.ProductionDate + delimiter(deli) +
+                this.ExpiredDate + delimiter(deli) +
+                this.MaterialsType + delimiter(deli) +
+                this.UnitOfMeasurement + delimiter(deli) +
+                this.IsConsumable + delimiter(deli) +
+                this.CostRate + delimiter(deli) +
+                this.UnitProvit;
         }
 
         public Dictionary<string, object> convertToDictionary()
@@ -71,6 +75,7 @@ namespace TableRegion.ViewModels
             dictProduct.Add("UnitOfMeasurement", this.UnitOfMeasurement);
             dictProduct.Add("IsConsumable", this.IsConsumable);
             dictProduct.Add("CostRate", this.CostRate);
+            dictProduct.Add("UnitProvit", this.UnitProvit);
 
             return dictProduct;
         }

@@ -7,8 +7,8 @@ namespace TableRegion.ViewModels
 {
     public interface ItemsViewModel 
     {
-        char delimiter();
-        string convertToString();
+        char delimiter(char? deli);
+        string convertToString(char? deli);
         Dictionary<string, object> convertToDictionary();
         decimal CalculateProductUnitPrice();
 

@@ -19,22 +19,24 @@ namespace TableRegion.ViewModels
         public string Certification { get; set; }
         public string UnitOfMeasurement { get; set; }
         public string CostRate { get; set; }
+        public string UnitProvit { get; set; }
 
         public FoodNBeverageViewModel()
         {
             
         }
-        public char delimiter()
+        public char delimiter(char? deli)
         {
-            return '\'';
+            return deli != null ? Convert.ToChar(deli) : '|';
+
         }
-        public FoodNBeverageViewModel(Product product)
+        public FoodNBeverageViewModel(Product product, char? deli)
         {
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
-                String[] productDetail = product.ProductDetail.Split(delimiter());
+                String[] productDetail = product.ProductDetail.Split(delimiter(deli));
 
                 this.ProductDescription = productDetail[0];
                 this.ProductionCode = productDetail[1];
@@ -46,22 +48,24 @@ namespace TableRegion.ViewModels
                 this.Certification = productDetail[7];
                 this.UnitOfMeasurement = productDetail[8];
                 this.CostRate = productDetail[9];
+                this.UnitProvit = productDetail[10];
 
             }
         }
 
-        public string convertToString()
+        public string convertToString(char? deli )
         {
-            return this.ProductDescription + delimiter() + 
-                this.ProductionCode + delimiter() + 
-                this.ProductionDate + delimiter() + 
-                this.ExpiredDate + delimiter() + 
-                this.NetWeight + delimiter() + 
-                this.Ingredients + delimiter() + 
-                this.DailyValue + delimiter() +
-                this.Certification + delimiter() +
-                this.UnitOfMeasurement + delimiter() +
-                this.CostRate;
+            return this.ProductDescription + delimiter(deli) + 
+                this.ProductionCode + delimiter(deli) + 
+                this.ProductionDate + delimiter(deli) + 
+                this.ExpiredDate + delimiter(deli) + 
+                this.NetWeight + delimiter(deli) + 
+                this.Ingredients + delimiter(deli) + 
+                this.DailyValue + delimiter(deli) +
+                this.Certification + delimiter(deli) +
+                this.UnitOfMeasurement + delimiter(deli) +
+                this.CostRate + delimiter(deli) +
+                this.UnitProvit;
         }
 
         public Dictionary<string, object> convertToDictionary()
@@ -79,6 +83,7 @@ namespace TableRegion.ViewModels
             dictProduct.Add("Certification", this.Certification);
             dictProduct.Add("UnitOfMeasurement", this.UnitOfMeasurement);
             dictProduct.Add("CostRate", this.CostRate);
+            dictProduct.Add("UnitProvit", this.UnitProvit);
 
             return dictProduct;
         }

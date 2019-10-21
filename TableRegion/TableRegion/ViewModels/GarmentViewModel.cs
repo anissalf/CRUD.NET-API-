@@ -21,21 +21,23 @@ namespace TableRegion.ViewModels
         public string AgeGroup { get; set; }
         public string UnitOfMeasurement { get; set; }
         public string CostRate { get; set; }
+        public string UnitProvit { get; set; }
         public GarmentViewModel()
         {
 
         }
-        public char delimiter()
+        public char delimiter(char? deli)
         {
-            return '\'';
+            return deli != null ? Convert.ToChar(deli) : '|';
+
         }
-        public GarmentViewModel( Product product)
+        public GarmentViewModel( Product product, char? deli)
         {
             this.ProductID = product.ProductID;
 
             if (!string.IsNullOrEmpty(product.ProductDetail))
             {
-                String[] productDetail = product.ProductDetail.Split(delimiter());
+                String[] productDetail = product.ProductDetail.Split(delimiter(deli));
 
                 this.ProductDescription = productDetail[0];
                 this.ProductionCode = productDetail[1];
@@ -49,22 +51,24 @@ namespace TableRegion.ViewModels
                 this.AgeGroup = productDetail[9];
                 this.UnitOfMeasurement = productDetail[10];
                 this.CostRate = productDetail[11];
+                this.UnitProvit = productDetail[12];
             }
         }
-        public string convertToString()
+        public string convertToString(char? deli)
         {
-            return this.ProductDescription + delimiter() +
-                this.ProductionCode + delimiter() +
-                this.ProductionDate + delimiter() +
-                this.GarmentsType + delimiter() +
-                this.Fabrics + delimiter() +
-                this.GenderRelated + delimiter() +
-                this.IsWaterProof + delimiter() +
-                this.Color + delimiter() +
-                this.Size + delimiter() +
-                this.AgeGroup + delimiter() +
-                this.UnitOfMeasurement + delimiter() +
-                this.CostRate;
+            return this.ProductDescription + delimiter(deli) +
+                this.ProductionCode + delimiter(deli) +
+                this.ProductionDate + delimiter(deli) +
+                this.GarmentsType + delimiter(deli) +
+                this.Fabrics + delimiter(deli) +
+                this.GenderRelated + delimiter(deli) +
+                this.IsWaterProof + delimiter(deli) +
+                this.Color + delimiter(deli) +
+                this.Size + delimiter(deli) +
+                this.AgeGroup + delimiter(deli) +
+                this.UnitOfMeasurement + delimiter(deli) +
+                this.CostRate + delimiter(deli) +
+                this.UnitProvit;
         }
 
         public Dictionary<string, object> convertToDictionary()
@@ -84,6 +88,7 @@ namespace TableRegion.ViewModels
             dictProduct.Add("AgeGroup", this.AgeGroup);
             dictProduct.Add("UnitOfMeasurement", this.UnitOfMeasurement);
             dictProduct.Add("CostRate", this.CostRate);
+            dictProduct.Add("UnitProvit", this.UnitProvit);
 
             return dictProduct;
         }

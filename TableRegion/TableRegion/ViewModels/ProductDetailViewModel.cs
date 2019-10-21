@@ -15,7 +15,7 @@ namespace TableRegion.ViewModels
 
         }
 
-        public ProductDetailViewModel (Product product)
+        public ProductDetailViewModel (Product product, char? deli)
         {
             ProductID = product.ProductID;
             ProductName = product.ProductName;
@@ -34,23 +34,23 @@ namespace TableRegion.ViewModels
             {
                 if (ProductType.Contains("FoodAndBeverageItems"))
                 {
-                    FoodNBeverageViewModel Foods = new FoodNBeverageViewModel(product);
+                    FoodNBeverageViewModel Foods = new FoodNBeverageViewModel(product, deli);
                     ProductDetail = Foods.convertToDictionary();
                     
                 }
                 if (ProductType.Contains("GarmentItems"))
                 {
-                    GarmentViewModel Garment = new GarmentViewModel(product);
+                    GarmentViewModel Garment = new GarmentViewModel(product, deli);
                     ProductDetail = Garment.convertToDictionary();
                 }
                 if (ProductType.Contains("MaterialItems"))
                 {
-                    MaterialViewModel Material = new MaterialViewModel(product);
+                    MaterialViewModel Material = new MaterialViewModel(product, deli);
                     ProductDetail = Material.convertToDictionary();
                 }
                 if (ProductType.Contains("TransportationServices"))
                 {
-                    TransportationServicesViewModel Transport = new TransportationServicesViewModel(product);
+                    TransportationServicesViewModel Transport = new TransportationServicesViewModel(product, deli);
                     ProductDetail = Transport.convertServiceToDictionary();
                 }
             }
@@ -60,7 +60,7 @@ namespace TableRegion.ViewModels
         
         
 
-        public Product convertToProduct(string condition = "", int? userDemand = 0, decimal? duration = 0)
+        public Product convertToProduct(string condition = "", int? userDemand = 0, decimal? duration = 0, char? deli=null)
         {
             var description = "";
             decimal? price = 0;
@@ -70,31 +70,31 @@ namespace TableRegion.ViewModels
             if (this.ProductType.Contains("FoodAndBeverageItems"))
             {
                 FoodNBeverageViewModel Foods = mapper.Map<FoodNBeverageViewModel>(this.ProductDetail);
-                description = Foods.convertToString();
+                description = Foods.convertToString(deli);
                 price = Foods.CalculateProductUnitPrice();
             }
             else if (this.ProductType.Contains("MaterialItems"))
             {
                 MaterialViewModel material = mapper.Map<MaterialViewModel>(this.ProductDetail);
-                description = material.convertToString();
+                description = material.convertToString(deli);
                 price = material.CalculateProductUnitPrice();
             }
             else if (this.ProductType.Contains("GarmentItems"))
             {
                 GarmentViewModel garment = mapper.Map<GarmentViewModel>(this.ProductDetail);
-                description = garment.convertToString();
+                description = garment.convertToString(deli);
                 price = garment.CalculateProductUnitPrice();
             }
             else if (this.ProductType.Contains("TransportationServices"))
             {
                 TransportationServicesViewModel transport = mapper.Map<TransportationServicesViewModel>(this.ProductDetail);
-                description = transport.convertServiceToString();
+                description = transport.convertServiceToString(deli);
                 price = transport.CalculateProductUnitPrices(condition, userDemand, 0);
             }
             else if (this.ProductType.Contains("TelecommunicationServices"))
             {
                 TelecomunicationServicesViewModel telecommunications = mapper.Map<TelecomunicationServicesViewModel>(this.ProductDetail);
-                description = telecommunications.convertServiceToString();
+                description = telecommunications.convertServiceToString(deli);
                 price = telecommunications.CalculateProductUnitPrices("", 0, duration);
             }
 
